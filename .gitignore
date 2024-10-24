@@ -1,0 +1,51 @@
+# Ignore Go binary files
+/bin/
+/obj/
+/*.exe
+/*.exe~
+/*.out
+/*.test
+
+# Dependency directories
+/vendor/
+.Gopkg.lock
+
+# Go module files
+/go.sum
+
+# IDE and editor files
+*.idea/
+*.vscode/
+*.swp
+*.swo
+*.bak
+
+# Environment variables files
+.env
+.env.local
+
+# Ignore log files
+*.log
+
+# Ignore coverage reports
+*.coverage
+coverage/
+
+# Ignore build directory
+build/
+
+# Ignore database files
+*.db
+*.sql
+
+# Ignore temporary files
+tmp/
+temp/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore specific directories
+node_modules/
+dist/
