@@ -2,9 +2,9 @@ package db
 
 import (
     "log"
-    "fmt" // Import the fmt package for string formatting
     "gorm.io/driver/postgres"
     "gorm.io/gorm"
+    "fmt" // Import the fmt package for string formatting
     "payment-service/config" 
 )
 
