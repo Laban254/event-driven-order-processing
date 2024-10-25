@@ -7,6 +7,8 @@ This project implements an Order Processing System composed of two microservices
 - **Order Service**: Receives and processes orders.
 - **Payment Service**: Handles payments when an order is placed.
 
+![order processing](https://github.com/user-attachments/assets/9fe9407a-daa2-44c9-9d12-321673ee65ae)
+
 ## 🏗️ Architecture
 
 The system is structured as follows:
@@ -21,6 +23,7 @@ The system is structured as follows:
 3. **Payment Service**: 
  - Listens for order creation events from Kafka.
  - Processes the corresponding payments for the orders.
+
 
 ## 🚀 Getting Started
 
