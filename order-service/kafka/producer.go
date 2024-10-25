@@ -2,7 +2,6 @@ package kafka
 
 import (
     "order-service/models"
-    // "order-service/services"
     "log"
 
     "github.com/confluentinc/confluent-kafka-go/kafka"
@@ -10,10 +9,9 @@ import (
 
 var (
     producer          *kafka.Producer
-    orderCreatedTopic = "order.created" // Change to a variable
+    orderCreatedTopic = "order.created"
 )
 
-// SetupProducer initializes the Kafka producer
 func SetupProducer(broker string) {
     var err error
     producer, err = kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": broker})
@@ -44,15 +42,9 @@ func SetupProducer(broker string) {
     }()
 }
 
-// PublishOrderCreated publishes an order created event to Kafka
 func PublishOrderCreated(order models.Order) error {
-    // Call the CreateOrder service
-    // if err := services.CreateOrder(&order); err != nil {
-    //     log.Printf("Error creating order: %v", err)
-    //     return err // Handle error accordingly
-    // }
 
-    jsonValue := order.ToJSON() // Call the ToJSON method from the models package
+    jsonValue := order.ToJSON()
     message := &kafka.Message{
         TopicPartition: kafka.TopicPartition{Topic: &orderCreatedTopic, Partition: kafka.PartitionAny},
         Value:          []byte(jsonValue),
@@ -61,7 +53,7 @@ func PublishOrderCreated(order models.Order) error {
     err := producer.Produce(message, nil) // Non-blocking produce
     if err != nil {
         log.Printf("Error producing message: %v", err)
-        return err // Return the error for handling in the API
+        return err 
     }
 
     // Wait for message deliveries before shutting down
