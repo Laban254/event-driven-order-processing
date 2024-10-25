@@ -3,12 +3,12 @@ package kafka
 import (
     "encoding/json"
     "log"
-    "payment-service/models" // Assuming Payment model is defined here
+    "payment-service/models" 
     "payment-service/services"
     "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-// SetupPaymentConsumer initializes the Kafka consumer for payment processing
+
 func SetupPaymentConsumer(broker string) error {
     consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
         "bootstrap.servers": broker,
@@ -19,7 +19,6 @@ func SetupPaymentConsumer(broker string) error {
         return err
     }
 
-    // Subscribe to the order.created topic
     if err := consumer.Subscribe("order.created", nil); err != nil {
         return err
     }
@@ -35,12 +34,11 @@ func SetupPaymentConsumer(broker string) error {
                     continue
                 }
 
-                // Log the received order for debugging
-                orderDataJSON, _ := json.Marshal(orderData) // Log the entire order data
+                orderDataJSON, _ := json.Marshal(orderData) 
                 log.Printf("Received order: %s\n", orderDataJSON)
 
                 // Extract necessary fields
-                orderID, ok := orderData["id"].(float64) // Assuming ID is a float64 in JSON
+                orderID, ok := orderData["id"].(float64) 
                 if !ok {
                     log.Printf("Invalid Order ID: cannot process payment")
                     continue
@@ -53,17 +51,16 @@ func SetupPaymentConsumer(broker string) error {
 
                 // Create a payment based on the received order
                 payment := &models.Payment{
-                    OrderID: uint(orderID), // Convert float64 to uint
+                    OrderID: uint(orderID), 
                     Amount:  amount,
-                    Status:  "pending", // Set initial status
+                    Status:  "pending", 
                 }
 
-                // Process the payment based on the received order
                 if err := services.ProcessPayment(payment); err != nil {
                     log.Printf("Error processing payment: %v", err)
-                    // Optionally, publish a failure message
+                    //  todo publish a failure message
                 } else {
-                    // Publish success event here if needed
+                    // todo Publish success event 
                     log.Printf("Successfully processed payment for Order ID: %d", payment.OrderID)
                 }
             } else {
