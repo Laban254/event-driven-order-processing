@@ -2,7 +2,7 @@ package kafka
 
 import (
     "order-service/models"
-    "order-service/services"
+    // "order-service/services"
     "log"
 
     "github.com/confluentinc/confluent-kafka-go/kafka"
@@ -21,6 +21,15 @@ func SetupProducer(broker string) {
         log.Fatalf("Failed to create producer: %s", err)
     }
 
+    // Check for broker availability with metadata query
+    metadata, err := producer.GetMetadata(nil, true, 5000) // Timeout of 5 seconds
+    if err != nil {
+        log.Fatalf("Failed to connect to Kafka broker: %s", err)
+    } else {
+        log.Printf("Connected to Kafka broker(s): %v", metadata.Brokers)
+    }
+
+    // Handle message delivery events
     go func() {
         for e := range producer.Events() {
             switch ev := e.(type) {
@@ -38,10 +47,10 @@ func SetupProducer(broker string) {
 // PublishOrderCreated publishes an order created event to Kafka
 func PublishOrderCreated(order models.Order) error {
     // Call the CreateOrder service
-    if err := services.CreateOrder(&order); err != nil {
-        log.Printf("Error creating order: %v", err)
-        return err // Handle error accordingly
-    }
+    // if err := services.CreateOrder(&order); err != nil {
+    //     log.Printf("Error creating order: %v", err)
+    //     return err // Handle error accordingly
+    // }
 
     jsonValue := order.ToJSON() // Call the ToJSON method from the models package
     message := &kafka.Message{
@@ -57,6 +66,7 @@ func PublishOrderCreated(order models.Order) error {
 
     // Wait for message deliveries before shutting down
     producer.Flush(15 * 1000) // Wait up to 15 seconds for messages to be delivered
+    log.Println("All messages flushed to Kafka successfully.")
 
     return nil // Indicate success
 }

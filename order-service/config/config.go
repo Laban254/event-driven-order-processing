@@ -22,9 +22,9 @@ func LoadConfig() Config {
     }
     return Config{
         DBHost:     getEnv("DB_HOST", "localhost"),
-        DBUser:     getEnv("DB_USER", "postgres"),
-        DBPassword: getEnv("DB_PASSWORD", "postgres"),
-        DBName:     getEnv("DB_NAME", "order_service"),
+        DBUser:     getEnv("DB_USER", "event"),
+        DBPassword: getEnv("DB_PASSWORD", "password"),
+        DBName:     getEnv("DB_NAME", "event"),
         DBPort:     dbPort, 
     }
 }
